@@ -3,141 +3,76 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Casino Lamia — First Bola</title>
+<title>Casino Lamia — First Bola (Simple)</title>
 <style>
-  :root{
-    --bg:#0f1115; --panel:#ffffff; --ink:#0f172a;
-    --muted:#6b7280; --line:#e5e7eb; --accent:#2563eb;
-    --pill:#f3f4f6; --pill-dash:#c7cdd8; --ok:#22c55e; --danger:#ef4444;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:#eaeef2;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
-  .wrap{max-width:820px;margin:0 auto;padding:16px}
-  /* top bar */
-  .appbar{background:#111827;border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px}
-  .logo{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#22c55e);display:grid;place-items:center;font-weight:700}
-  .title{font-weight:700;font-size:18px}
-  .ghost{opacity:.8}
-  .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .spacer{flex:1}
-  .chip{background:#1f2937;border-radius:999px;padding:6px 10px;font-size:12px}
-  .btn{border:0;border-radius:12px;padding:10px 14px;cursor:pointer}
-  .btn.ghost{background:transparent;border:1px solid #334155;color:#cbd5e1}
-  .btn.primary{background:var(--accent);color:#fff}
-  /* card */
-  .card{background:var(--panel);color:var(--ink);border-radius:18px;padding:16px;border:1px solid var(--line)}
-  .section-title{color:var(--muted);font-weight:700;font-size:12px;margin:6px 0 10px}
-  .host-line{display:flex;align-items:center;gap:8px;margin:10px 2px;font-weight:600}
-  .grid{display:grid;gap:10px}
-  .slot-row{background:#f8fafc;border:1px solid var(--line);padding:12px;border-radius:12px}
-  .slot-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-  .slot-head .name{font-weight:700}
-  .counter{color:var(--muted);font-weight:600}
+  :root{--bg:#0f1115;--panel:#ffffff;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--pill:#f8fafc;--dash:#cbd5e1;--accent:#2563eb;--ok:#22c55e;--danger:#ef4444}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:#eaeef2;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+  .wrap{max-width:860px;margin:0 auto;padding:16px}
+  .top{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#22c55e);display:grid;place-items:center}
+  .title{font-weight:800;font-size:18px}
+  .card{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:12px}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  input[type=text]{flex:1;min-width:180px;padding:12px;border-radius:10px;border:1px solid var(--line)}
+  button{border:0;border-radius:12px;padding:10px 14px;cursor:pointer}
+  .ghost{background:transparent;border:1px solid #cbd5e1}
+  .primary{background:var(--accent);color:#fff}
+  .danger{background:var(--danger);color:#fff}
+  .grid{display:grid;gap:12px}
+  @media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
+  .section{background:#f1f5f9;border:1px solid var(--line);border-radius:14px;padding:12px}
+  .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .name{font-weight:800}
+  .counter{color:var(--muted);font-weight:700}
   .pillbar{display:flex;gap:8px;flex-wrap:wrap}
-  .pill{background:var(--pill);border-radius:10px;padding:8px 12px;border:1px solid #d1d5db;font-weight:600}
-  .pill.open{color:var(--muted);border-style:dashed;border-color:var(--pill-dash);font-weight:500}
-  .cta{display:flex;gap:12px;margin-top:14px}
-  .cta .in{background:var(--ok);color:#fff}
-  .cta .out{background:var(--danger);color:#fff}
-  .muted-card{background:#f3f4f6;color:#475569;border:1px dashed #cbd5e1;border-radius:16px;padding:18px;text-align:center}
+  .pill{background:var(--pill);border:1px solid #d1d5db;border-radius:10px;padding:10px 12px;font-weight:700}
+  .pill.open{border-style:dashed;border-color:var(--dash);color:#64748b}
   .tiny{font-size:12px;color:#94a3b8}
-  /* responsive */
-  @media (min-width:720px){
-    .grid{grid-template-columns:1fr 1fr}
-    .cta{justify-content:center}
-  }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <!-- APP BAR -->
-  <div class="appbar">
+  <div class="top">
     <div class="logo">🎲</div>
     <div class="title">Casino Lamia</div>
-    <div class="spacer"></div>
-    <div class="row tiny">
-      <span>Logged in as:</span>
-      <strong id="who" class="ghost">—</strong>
-      <button id="changeName" class="btn ghost" title="Set display name">Change</button>
-      <button id="signOut" class="btn ghost">Sign out</button>
-    </div>
   </div>
 
-  <!-- AUTH CARD (shown when signed out / unverified) -->
-  <div id="authCard" class="card" style="margin-top:12px;display:none;">
-    <div class="grid" style="grid-template-columns:1fr;">
-      <div>
-        <div class="section-title">SIGN IN</div>
-        <div class="grid">
-          <input id="siEmail" placeholder="Email" style="padding:12px;border-radius:10px;border:1px solid var(--line)">
-          <input id="siPass" type="password" placeholder="Password" style="padding:12px;border-radius:10px;border:1px solid var(--line)">
-          <div class="row">
-            <button id="signIn" class="btn primary">Sign in</button>
-            <button id="forgot" class="btn ghost">Forgot password</button>
-          </div>
-        </div>
+  <!-- name + actions -->
+  <div class="card">
+    <div class="row">
+      <input id="playerName" type="text" placeholder="Your name (e.g. Shehab)" />
+      <button id="saveName" class="primary">Save Name</button>
+      <button id="clearMine" class="ghost" title="Remove yourself from any spot">I’m Out</button>
+      <button id="resetBoard" class="danger" title="Clear all spots">Reset Board</button>
+    </div>
+    <div class="tiny" style="margin-top:6px">Tip: Save your name once, then tap any “Open” spot to claim it. Tap your own name to free it.</div>
+  </div>
+
+  <!-- board -->
+  <div class="card">
+    <div class="grid">
+      <div class="section">
+        <div class="head"><div class="name">First Bola</div><div class="counter" id="c_first">0/4</div></div>
+        <div class="pillbar" id="p_first"></div>
       </div>
-      <div>
-        <div class="section-title">CREATE ACCOUNT</div>
-        <div class="grid">
-          <input id="suEmail" placeholder="Email" style="padding:12px;border-radius:10px;border:1px solid var(--line)">
-          <input id="suPass" type="password" placeholder="Password" style="padding:12px;border-radius:10px;border:1px solid var(--line)">
-          <button id="signUp" class="btn">Sign up (email verification)</button>
-        </div>
+      <div class="section">
+        <div class="head"><div class="name">Next</div><div class="counter" id="c_next">0/2</div></div>
+        <div class="pillbar" id="p_next"></div>
       </div>
-      <div id="verifyBanner" class="muted-card" style="display:none;">
-        Check your inbox and verify your email to participate. <button id="resend" class="btn ghost" style="margin-left:8px">Resend link</button>
+      <div class="section">
+        <div class="head"><div class="name">After Next</div><div class="counter" id="c_after_next">0/2</div></div>
+        <div class="pillbar" id="p_after_next"></div>
+      </div>
+      <div class="section">
+        <div class="head"><div class="name">After After</div><div class="counter" id="c_after_after">0/2</div></div>
+        <div class="pillbar" id="p_after_after"></div>
       </div>
     </div>
-  </div>
-
-  <!-- HOST + REGISTRATION CARD -->
-  <div id="regCard" class="card" style="margin-top:12px;display:none;">
-    <div class="host-line">Host: <span id="hostName">—</span></div>
-
-    <div class="section-title">REGISTRATION STATUS</div>
-
-    <div class="slot-row">
-      <div class="slot-head"><div class="name">First Bola</div><div class="counter" id="c_first">0/3</div></div>
-      <div class="pillbar" id="p_first"></div>
-    </div>
-
-    <div class="slot-row">
-      <div class="slot-head"><div class="name">Next</div><div class="counter" id="c_next">0/2</div></div>
-      <div class="pillbar" id="p_next"></div>
-    </div>
-
-    <div class="slot-row">
-      <div class="slot-head"><div class="name">After Next</div><div class="counter" id="c_after_next">0/2</div></div>
-      <div class="pillbar" id="p_after_next"></div>
-    </div>
-
-    <div class="slot-row">
-      <div class="slot-head"><div class="name">After After</div><div class="counter" id="c_after_after">0/2</div></div>
-      <div class="pillbar" id="p_after_after"></div>
-    </div>
-
-    <div class="cta">
-      <button id="inBtn" class="btn in">✔︎ I’m In</button>
-      <button id="outBtn" class="btn out">✖︎ I’m Out</button>
-    </div>
-  </div>
-
-  <!-- TODAY/UPCOMING (static placeholders to match your screenshots) -->
-  <div class="card" style="margin-top:12px;">
-    <div style="font-weight:700;margin-bottom:8px;">Today's Events</div>
-    <div class="muted-card">No events scheduled for today<br><span class="tiny">Create a new event to get started</span></div>
-  </div>
-
-  <div class="card" style="margin-top:12px;">
-    <div style="font-weight:700;margin-bottom:8px;">Upcoming Events</div>
-    <div class="muted-card">No upcoming events<br><span class="tiny">Schedule future events to see them here</span></div>
   </div>
 </div>
 
-<!-- FIREBASE + APP LOGIC -->
 <script type="module">
-  /********* FIREBASE CONFIG (yours) *********/
+  /* Your Firebase config */
   const firebaseConfig = {
     apiKey: "AIzaSyCo_oLqNL2kElNbyT4GQuJ5IU8XbV8UgiY",
     authDomain: "casino-lamia-58222.firebaseapp.com",
@@ -148,254 +83,164 @@
     measurementId: "G-0BXHB0R5EJ"
   };
 
-  /* Allow only these emails */
-  const ALLOWLIST = ["ShehabEzzat@gmail.com","amarzouk78@gmail.com"]; // <-- edit these
-
-  /* Imports (CDN ESM) */
+  /* Firebase CDN ESM */
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getAnalytics }   from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
   import {
-    getAuth,onAuthStateChanged,signOut,
-    createUserWithEmailAndPassword,signInWithEmailAndPassword,
-    sendEmailVerification,sendPasswordResetEmail,updateProfile
+    getAuth, signInAnonymously, onAuthStateChanged
   } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
   import {
-    getFirestore,collection,addDoc,onSnapshot,
-    serverTimestamp,doc,updateDoc,runTransaction,query,where,orderBy,limit,getDocs
+    getFirestore, doc, getDoc, setDoc, onSnapshot, runTransaction
   } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
   const app = initializeApp(firebaseConfig);
-  try{ getAnalytics(app); }catch(_){}
   const auth = getAuth(app);
   const db = getFirestore(app);
 
+  /* Board document (single shared board) */
+  const boardRef = doc(db, "boards", "main");
+
   /* UI refs */
-  const who = document.getElementById("who");
-  const changeName = document.getElementById("changeName");
-  const authCard = document.getElementById("authCard");
-  const regCard  = document.getElementById("regCard");
-  const verifyBanner = document.getElementById("verifyBanner");
-  const hostName = document.getElementById("hostName");
+  const elName = document.getElementById("playerName");
+  const saveNameBtn = document.getElementById("saveName");
+  const clearMineBtn = document.getElementById("clearMine");
+  const resetBtn = document.getElementById("resetBoard");
 
-  const siEmail = document.getElementById("siEmail");
-  const siPass  = document.getElementById("siPass");
-  const suEmail = document.getElementById("suEmail");
-  const suPass  = document.getElementById("suPass");
-  const signInBtn = document.getElementById("signIn");
-  const signUpBtn = document.getElementById("signUp");
-  const resendBtn = document.getElementById("resend");
-  const forgotBtn = document.getElementById("forgot");
-  const signOutBtn= document.getElementById("signOut");
-
-  const p_first = document.getElementById("p_first");
-  const p_next  = document.getElementById("p_next");
-  const p_after_next  = document.getElementById("p_after_next");
-  const p_after_after = document.getElementById("p_after_after");
   const c_first = document.getElementById("c_first");
-  const c_next  = document.getElementById("c_next");
-  const c_after_next  = document.getElementById("c_after_next");
-  const c_after_after = document.getElementById("c_after_after");
-  const inBtn  = document.getElementById("inBtn");
-  const outBtn = document.getElementById("outBtn");
+  const c_next = document.getElementById("c_next");
+  const c_an = document.getElementById("c_after_next");
+  const c_aa = document.getElementById("c_after_after");
+  const p_first = document.getElementById("p_first");
+  const p_next = document.getElementById("p_next");
+  const p_an = document.getElementById("p_after_next");
+  const p_aa = document.getElementById("p_after_after");
 
-  /* Helpers */
-  const emailName = (e)=> (e||"").split("@")[0];
-  const isAllowed = (u)=> !!u && !!u.emailVerified && (ALLOWLIST.length===0 || ALLOWLIST.includes(u.email));
+  /* Local name (stored only on device) */
+  const getMyName = () => localStorage.getItem("cl_name") || "";
+  const setMyName = (v) => localStorage.setItem("cl_name", v.trim());
 
-  const pill = (text, filled=false)=>{
-    const el = document.createElement("span");
-    el.className = "pill" + (filled ? "" : " open");
-    el.textContent = filled ? text : "Open";
-    return el;
-  };
+  elName.value = getMyName();
 
-  /* Auth flows */
-  signInBtn.onclick = async ()=>{
-    try{ await signInWithEmailAndPassword(auth, siEmail.value.trim(), siPass.value); }
-    catch(e){ alert(e.message); }
-  };
-  signUpBtn.onclick = async ()=>{
-    try{
-      const cred = await createUserWithEmailAndPassword(auth, suEmail.value.trim(), suPass.value);
-      await sendEmailVerification(cred.user);
-      alert("Verification email sent. Verify, then sign in.");
-    }catch(e){ alert(e.message); }
-  };
-  resendBtn.onclick = async ()=>{
-    if(auth.currentUser){ await sendEmailVerification(auth.currentUser); alert("Verification sent."); }
-  };
-  forgotBtn.onclick = async ()=>{
-    if(!siEmail.value.trim()) return alert("Enter your email above first.");
-    try{ await sendPasswordResetEmail(auth, siEmail.value.trim()); alert("Password reset email sent."); }
-    catch(e){ alert(e.message); }
-  };
-  signOutBtn.onclick = ()=>signOut(auth);
-
-  changeName.onclick = async ()=>{
-    const u = auth.currentUser; if(!u) return;
-    const d = prompt("Display name", u.displayName || emailName(u.email) );
-    if(d){ await updateProfile(u,{displayName:d}); who.textContent = d; }
+  saveNameBtn.onclick = () => {
+    const v = elName.value.trim();
+    if (!v) return alert("Type a name first.");
+    setMyName(v);
+    alert("Saved.");
   };
 
-  onAuthStateChanged(auth, (user)=>{
-    if(!user){
-      who.textContent = "—";
-      authCard.style.display = "block";
-      regCard.style.display  = "none";
-      verifyBanner.style.display = "none";
-      return;
+  /* Start anonymous auth */
+  onAuthStateChanged(auth, async (u) => {
+    if (!u) await signInAnonymously(auth);
+    // ensure board exists
+    const snap = await getDoc(boardRef);
+    if (!snap.exists()) {
+      await setDoc(boardRef, {
+        first_bola: ["", "", "", ""], // 4 slots
+        next: ["", ""],               // 2
+        after_next: ["", ""],         // 2
+        after_after: ["", ""],        // 2
+        updatedAt: Date.now()
+      });
     }
-    who.textContent = user.displayName || emailName(user.email);
-    const ok = isAllowed(user);
-    authCard.style.display = ok ? "none" : "block";
-    verifyBanner.style.display = user.emailVerified ? "none" : "block";
-    regCard.style.display  = ok ? "block" : "none";
-    // ensure there is (or create) today's host day
-    ensureToday(user).then(updateUIForDay);
   });
 
-  /* Data model helpers */
-  const todayKey = ()=>{
-    const d = new Date();
-    const yyyy = d.getFullYear();
-    const mm = String(d.getMonth()+1).padStart(2,"0");
-    const dd = String(d.getDate()).padStart(2,"0");
-    return `${yyyy}-${mm}-${dd}`;
-  };
+  /* Live board */
+  onSnapshot(boardRef, (snap) => {
+    const d = snap.data() || {};
+    drawRow(p_first, d.first_bola || ["", "", "", ""], 4, "first_bola");
+    drawRow(p_next,  d.next || ["",""], 2, "next");
+    drawRow(p_an,    d.after_next || ["",""], 2, "after_next");
+    drawRow(p_aa,    d.after_after || ["",""], 2, "after_after");
 
-  async function ensureToday(user){
-    // find any open day with whenISO starting today; otherwise create one making current user host
-    const start = todayKey() + "T00:00:00";
-    const end   = todayKey() + "T23:59:59";
-    const q = query(collection(db,"days"),
-      where("isClosed","==",false),
-      orderBy("whenISO","asc"),
-      limit(10)
-    );
-    const existing = await getDocs(q);
-    let dayDoc = existing.docs.find(d=> (d.data().whenISO||"").startsWith(todayKey()));
-    if(!dayDoc){
-      const ref = await addDoc(collection(db,"days"),{
-        whenISO: todayKey()+"T20:00:00", // default 8pm (user can ignore)
-        createdAt: serverTimestamp(),
-        hostEmail: user.email,
-        isClosed:false,
-        first_bola:[user.email],
-        next:[], after_next:[], after_after:[]
-      });
-      const snapshot = { id: ref.id, ... (await (await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js")).getDoc(doc(db,"days",ref.id))).data() };
-      return { id: ref.id, ...snapshot };
-    }
-    return { id: dayDoc.id, ...dayDoc.data() };
-  }
-
-  /* Live updates for ANY day documents (filter to today's) */
-  onSnapshot(collection(db,"days"), (snap)=>{
-    const items = [];
-    snap.forEach(d=>{
-      const data = d.data();
-      if(!data.isClosed && (data.whenISO||"").startsWith(todayKey()))
-        items.push({id:d.id, ...data});
-    });
-    if(items[0]) updateUIForDay(items[0]);
+    c_first.textContent = `${countFilled(d.first_bola||[])} / 4`;
+    c_next.textContent  = `${countFilled(d.next||[])} / 2`;
+    c_an.textContent    = `${countFilled(d.after_next||[])} / 2`;
+    c_aa.textContent    = `${countFilled(d.after_after||[])} / 2`;
   });
 
-  function updateUIForDay(day){
-    // header host
-    hostName.textContent = day.hostEmail ? (auth.currentUser && auth.currentUser.email===day.hostEmail ? (auth.currentUser.displayName || emailName(day.hostEmail)) : emailName(day.hostEmail)) : "—";
+  function countFilled(arr){ return arr.filter(x=>x && x.trim().length>0).length; }
 
-    // buckets
-    const hostEmail = day.hostEmail;
-    const fb = (day.first_bola||[]);
-    const nx = (day.next||[]);
-    const an = (day.after_next||[]);
-    const aa = (day.after_after||[]);
-
-    // counters like 1/3 (first bola shows AFTER host count)
-    c_first.textContent = `${Math.max(0, fb.length-1)}/3`;
-    c_next.textContent  = `${nx.length}/2`;
-    c_after_next.textContent = `${an.length}/2`;
-    c_after_after.textContent = `${aa.length}/2`;
-
-    // draw pills as in the screenshot (filled names then "Open")
-    const draw = (el, arr, cap, showHostLabel=false)=>{
-      el.innerHTML="";
-      arr.forEach(e=>{
-        const label = (showHostLabel && e===hostEmail) ? (auth.currentUser && auth.currentUser.email===e ? (auth.currentUser.displayName || emailName(e)) : emailName(e)) : emailName(e);
-        el.appendChild(pill(label, true));
-      });
-      const toFill = cap - arr.length;
-      for(let i=0;i<toFill;i++) el.appendChild(pill("Open", false));
-    };
-
-    draw(p_first, fb, 4, true);
-    draw(p_next, nx, 2, false);
-    draw(p_after_next, an, 2, false);
-    draw(p_after_after, aa, 2, false);
-
-    // wire buttons
-    inBtn.onclick = ()=> checkIn(day.id);
-    outBtn.onclick= ()=> checkOut(day.id);
+  function drawRow(container, arr, cap, key){
+    container.innerHTML = "";
+    for (let i=0;i<cap;i++){
+      const name = (arr[i]||"").trim();
+      const btn = document.createElement("button");
+      btn.className = "pill" + (name ? "" : " open");
+      btn.textContent = name || "Open";
+      btn.onclick = () => toggleSpot(key, i);
+      container.appendChild(btn);
+    }
   }
 
-  /* I'm In (transaction placing user into next available bucket) */
-  async function checkIn(dayId){
-    const user = auth.currentUser;
-    if(!isAllowed(user)) return alert("Not allowed.");
-    const email = user.email;
-    const ref = doc(db,"days",dayId);
-    await runTransaction(db, async tx=>{
-      const snap = await tx.get(ref);
-      if(!snap.exists()) throw new Error("Day not found.");
-      const d = snap.data();
-      if(d.isClosed) throw new Error("Day is closed.");
+  async function toggleSpot(bucket, idx){
+    const my = getMyName();
+    if(!my) return alert("Save your name first.");
 
-      const buckets = ["first_bola","next","after_next","after_after"];
-      const caps = { first_bola:4, next:2, after_next:2, after_after:2 };
-
-      // Already in?
-      if (buckets.some(b => (d[b]||[]).includes(email))) throw new Error("You already checked in.");
-
-      // Place (host already in first_bola index 0)
-      const u = {};
-      for(const b of buckets) u[b] = [...(d[b]||[])];
-
-      if(u.first_bola.length < caps.first_bola){ u.first_bola.push(email); }
-      else if(u.next.length < caps.next){ u.next.push(email); }
-      else if(u.after_next.length < caps.after_next){ u.after_next.push(email); }
-      else if(u.after_after.length < caps.after_after){ u.after_after.push(email); }
-      else { throw new Error("All spots are taken."); }
-
-      tx.update(ref, u);
-    }).catch(e=>alert(e.message));
-  }
-
-  /* I'm Out (remove from any bucket) */
-  async function checkOut(dayId){
-    const user = auth.currentUser;
-    if(!isAllowed(user)) return alert("Not allowed.");
-    const email = user.email;
-    const ref = doc(db,"days",dayId);
-    await runTransaction(db, async tx=>{
-      const snap = await tx.get(ref);
-      if(!snap.exists()) throw new Error("Day not found.");
+    await runTransaction(db, async (tx) => {
+      const snap = await tx.get(boardRef);
       const d = snap.data();
 
       const buckets = ["first_bola","next","after_next","after_after"];
-      const u = {};
-      for(const b of buckets){
-        const arr = (d[b]||[]).filter(e=>e!==email);
-        // Do NOT allow removing the host (keep first_bola[0] as host)
-        if(b==="first_bola" && d.hostEmail && arr.length>0 && arr[0]!==d.hostEmail){
-          // Ensure host stays at index 0 if present
-          const hostAt = arr.indexOf(d.hostEmail);
-          if(hostAt>-1){ arr.splice(hostAt,1); arr.unshift(d.hostEmail); }
-        }
-        u[b]=arr;
+      // If my name is already anywhere and I'm tapping an empty, block
+      const alreadyAt = buckets.find(b => (d[b]||[]).some(x => x && x.trim() === my));
+      const slotName = (d[bucket][idx]||"").trim();
+
+      if (slotName === my) {
+        // free my slot
+        const arr = [...d[bucket]];
+        arr[idx] = "";
+        tx.update(boardRef, { [bucket]: arr, updatedAt: Date.now() });
+        return;
       }
-      tx.update(ref,u);
-    }).catch(e=>alert(e.message));
+
+      if (slotName) {
+        // occupied by someone else
+        throw new Error("This spot is already taken.");
+      }
+
+      if (alreadyAt && alreadyAt !== bucket) {
+        throw new Error("You already claimed a spot. Tap your name to free it first.");
+      }
+
+      // place me here
+      const arr = [...d[bucket]];
+      arr[idx] = my;
+      tx.update(boardRef, { [bucket]: arr, updatedAt: Date.now() });
+    }).catch(e => alert(e.message));
   }
+
+  clearMineBtn.onclick = async ()=>{
+    const my = getMyName();
+    if(!my) return alert("Save your name first.");
+    await runTransaction(db, async (tx)=>{
+      const snap = await tx.get(boardRef);
+      const d = snap.data();
+      const buckets = ["first_bola","next","after_next","after_after"];
+      const updates = {};
+      let changed = false;
+      for (const b of buckets){
+        const arr = [...d[b]];
+        for (let i=0;i<arr.length;i++){
+          if ((arr[i]||"").trim() === my){ arr[i] = ""; changed = true; }
+        }
+        updates[b] = arr;
+      }
+      if (changed) tx.update(boardRef, {...updates, updatedAt: Date.now()});
+    });
+  };
+
+  // Simple reset with a prompt PIN (default 7777). Change this PIN if you like.
+  const RESET_PIN = "7777";
+  resetBtn.onclick = async ()=>{
+    const pin = prompt("Reset PIN?");
+    if (pin !== RESET_PIN) return alert("Wrong PIN.");
+    await setDoc(boardRef, {
+      first_bola: ["","","",""],
+      next: ["",""],
+      after_next: ["",""],
+      after_after: ["",""],
+      updatedAt: Date.now()
+    });
+  };
 </script>
 </body>
 </html>
